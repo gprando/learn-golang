@@ -156,10 +156,48 @@ Uso:
    _, name := nameFuncReturn2Values()
 ```
 
-#### Estruturas de repetição
+### Estruturas de repetição
 - Em go não temos o while, quando queremos um loop infinito, utilizamos o for sem nenhum argumento
 ```go
   for {
     // instrução aqui
   }
+```
+- Também podemos utilizar a forma padrão de um for
+```go
+  for i := 0; i < len(arrayX); i++ {
+      fmt.Println(arrayX[i])
+  }
+```
+- Outra forma é utilizar o `range`
+```go
+   for i, element := range arrayX {
+        fmt.Println("Estou passando na posição", i,
+            "o valor do elemento é", element)
+    }
+```
+### Array
+- Array tem um tamanho fixo, não podemos modificar o tamanho
+- Para tamanhos dinâmicos temos outra estrutura chamada de slice
+```go
+  var names [4]string
+  names[0] = "Gabriel"
+  names[1] = "João"
+  names[2] = "Toy"
+```
+
+### Slices
+- Similar é um array, mas com tamanho dinâmico
+- Faz alocação de memória conforme a necessidade
+- Podemos usar a func `append` para adicionar elementos ao slice
+- Podemos usar a func `len` para verificar o tamanho
+- Podemos usar a func `cap` para verificar a capacidade
+
+```go
+  names := []string {"Gabriel", "João", "Toy"}
+  append(names, "Aparecida")
+
+  fmt.Println("O meu slice tem", len(names), "itens")
+  fmt.Println("O meu slice tem capacidade para", cap(names), "itens")
+
 ```
