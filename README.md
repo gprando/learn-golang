@@ -201,3 +201,31 @@ Uso:
   fmt.Println("O meu slice tem capacidade para", cap(names), "itens")
 
 ```
+
+## Módulos
+- No Go lidamos muito com pacotes, para começar a criar pacotes, devemos utilizar o comando
+  ```bash
+    go mod init nomeModulo
+  ```
+- Por padrão, funções dentro de um módulo para serem expostas para outros arquivos, devem iniciar com letra maiúscula, caso seja minuscula, ela irá se comportar como uma função privada daquele arquivo
+- Basta declarar no início do arquivo o nome do pacote
+  Ex:  
+  ```go
+  package testModules
+
+  import "fmt"
+
+  func TestPrint() {
+    fmt.Println("Func test")
+  }
+  ```
+- Após isso só usar em outro arquivo
+  ```go
+  package main
+
+  import testModules "testModules/module-test"
+
+  func main() {
+    testModules.TestPrint()
+  }
+  ```
