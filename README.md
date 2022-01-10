@@ -1,4 +1,4 @@
-## Ao longo desse readme teremos algumas anotações feitas durante o estuda da linguagem
+## Ao longo desse readme teremos algumas anotações feitas durante o estudo da linguagem
 
 ## Como executar um programa em Go
 
@@ -229,3 +229,39 @@ Uso:
     testModules.TestPrint()
   }
   ```
+
+  ## Ponteiros
+  - Ponteiro é um tema muito grande e pode ser um pouco complexo, mas tentarei resumir de forma simples
+    - Basicamente um ponteiro aponta para um endereço de memória, onde podemos controlar o que está em determinado endereço de memória
+    - Há duas formas de passar uma variável para uma função, passar por cópia ou referência (usando ponteiros), veremos um exemplo a seguir
+    ```go
+    package main
+
+    import "fmt"
+
+    func main() {
+      var value int32 = 9
+
+      fmt.Println("address memory is", &value, "and value:", value)
+      printAsCopy(value)
+      fmt.Println("After function address memory is", &value, "and value:", value)
+
+      fmt.Println("")
+      fmt.Println("")
+
+      fmt.Println("address memory is", &value, "and value:", value)
+      printAsReference(&value)
+      fmt.Println("After function address memory is", &value, "and value:", value)
+    }
+
+    func printAsReference(value *int32) {
+      fmt.Println("printAsReference -> address memory is", value, "and value:", *value)
+      *value = 16 // Alterando o valor na memória, teremos efeito diretamente na função main
+    }
+
+    func printAsCopy(value int32) {
+      fmt.Println("printAsCopy -> address memory is", &value, "and value:", value)
+      value = 16 // como estamos mudando o valor somente aqui na variável de cópia, não teremos
+      // o efeito na função main
+    }
+    ```
