@@ -1,4 +1,4 @@
-## Ao longo desse readme teremos algumas anotações feitas durante o estuda da linguagem
+## Ao longo desse readme teremos algumas anotações feitas durante o estudo da linguagem
 
 ## Como executar um programa em Go
 
@@ -201,3 +201,67 @@ Uso:
   fmt.Println("O meu slice tem capacidade para", cap(names), "itens")
 
 ```
+
+## Módulos
+- No Go lidamos muito com pacotes, para começar a criar pacotes, devemos utilizar o comando
+  ```bash
+    go mod init nomeModulo
+  ```
+- Por padrão, funções dentro de um módulo para serem expostas para outros arquivos, devem iniciar com letra maiúscula, caso seja minuscula, ela irá se comportar como uma função privada daquele arquivo
+- Basta declarar no início do arquivo o nome do pacote
+  Ex:  
+  ```go
+  package testModules
+
+  import "fmt"
+
+  func TestPrint() {
+    fmt.Println("Func test")
+  }
+  ```
+- Após isso só usar em outro arquivo
+  ```go
+  package main
+
+  import testModules "testModules/module-test"
+
+  func main() {
+    testModules.TestPrint()
+  }
+  ```
+
+  ## Ponteiros
+  - Ponteiro é um tema muito grande e pode ser um pouco complexo, mas tentarei resumir de forma simples
+    - Basicamente um ponteiro aponta para um endereço de memória, onde podemos controlar o que está em determinado endereço de memória
+    - Há duas formas de passar uma variável para uma função, passar por cópia ou referência (usando ponteiros), veremos um exemplo a seguir
+    ```go
+    package main
+
+    import "fmt"
+
+    func main() {
+      var value int32 = 9
+
+      fmt.Println("address memory is", &value, "and value:", value)
+      printAsCopy(value)
+      fmt.Println("After function address memory is", &value, "and value:", value)
+
+      fmt.Println("")
+      fmt.Println("")
+
+      fmt.Println("address memory is", &value, "and value:", value)
+      printAsReference(&value)
+      fmt.Println("After function address memory is", &value, "and value:", value)
+    }
+
+    func printAsReference(value *int32) {
+      fmt.Println("printAsReference -> address memory is", value, "and value:", *value)
+      *value = 16 // Alterando o valor na memória, teremos efeito diretamente na função main
+    }
+
+    func printAsCopy(value int32) {
+      fmt.Println("printAsCopy -> address memory is", &value, "and value:", value)
+      value = 16 // como estamos mudando o valor somente aqui na variável de cópia, não teremos
+      // o efeito na função main
+    }
+    ```
