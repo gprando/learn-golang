@@ -3,6 +3,7 @@ package models
 import "mvc/db"
 
 type Produto struct {
+	Id         int
 	Nome       string
 	Descricao  string
 	Preco      float64
@@ -30,6 +31,7 @@ func BuscaTodosOsProdutos() []Produto {
 			panic(err.Error())
 		}
 
+		p.Id = id
 		p.Nome = nome
 		p.Descricao = descricao
 		p.Preco = preco
@@ -52,6 +54,19 @@ func CriaNovoProduto(nome, descricao string, precoConvertidoParaFloat float64, q
 		panic(err.Error())
 	}
 	insereDadosNoBanco.Exec(nome, descricao, precoConvertidoParaFloat, quantidadeConvertidaParaInt)
+
+	defer db.Close()
+}
+
+func DeletaProduto(id string) {
+	db := db.ConectaComBancoDeDados()
+	deletarProduto, err := db.Prepare("delete from produtos where id=$1")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	deletarProduto.Exec(id)
 
 	defer db.Close()
 }
