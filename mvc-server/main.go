@@ -1,30 +1,12 @@
 package main
 
 import (
-	"database/sql"
 	"html/template"
+	"mvc/models"
 	"net/http"
-
-	_ "github.com/lib/pq"
 )
 
-type Produto struct {
-	Nome       string
-	Descricao  string
-	Preco      float64
-	Quantidade int64
-}
-
 var templates = template.Must(template.ParseGlob("templates/*.html"))
-
-func conectaComBancoDeDados() *sql.DB {
-	conexao := "user=postgres dbname=study_go password=docker123 host=localhost sslmode=disable"
-	db, err := sql.Open("postgres", conexao)
-	if err != nil {
-		panic(err.Error())
-	}
-	return db
-}
 
 func main() {
 	http.HandleFunc("/", index)
@@ -32,34 +14,7 @@ func main() {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-	db := conectaComBancoDeDados()
-
-	selectDeTodosOsProdutos, err := db.Query("select * from produtos")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	p := Produto{}
-	produtos := []Produto{}
-
-	for selectDeTodosOsProdutos.Next() {
-		var id, quantidade int
-		var nome, descricao string
-		var preco float64
-
-		err = selectDeTodosOsProdutos.Scan(&id, &nome, &descricao, &preco, &quantidade)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		p.Nome = nome
-		p.Descricao = descricao
-		p.Preco = preco
-		p.Quantidade = int64(quantidade)
-
-		produtos = append(produtos, p)
-	}
-
+	produtos := models.BuscaTodosOsProdutos()
 	templates.ExecuteTemplate(w, "Index", produtos)
-	defer db.Close()
+
 }
