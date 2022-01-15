@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres_study_go:
+    image: postgres
+    container_name: postgres_study_go
+    ports:
+      # - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+      - 5432:5432
+    environment:
+      # - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=docker123
+      - POSTGRES_DB=study_go
+    volumes:
+      - pgdata:/data/postgres
+volumes:
+  pgdata:
+    driver: local
