@@ -265,3 +265,112 @@ Uso:
       // o efeito na função main
     }
     ```
+
+## Maps
+- Utiliza o formato key:value.
+- E.g. nome e telefone
+- Performance excelente para lookups.
+- map[key]value{ key: value }
+- Acesso: m[key]
+- Key sem value retorna zero. Isso pode trazer problemas.
+- Para verificar: comma ok idiom.
+- v, ok := m[key]
+- ok é um boolean, true/false
+- Na prática: if v, ok := m[key]; ok { }
+- Para adicionar um item: m[v] = value
+- Maps não tem ordem.
+- Ex: 
+  ```go
+  package main
+
+  import (
+    "fmt"
+  )
+
+  func main() {
+
+    amigos := map[string]int{
+      "alfredo": 5551234,
+      "joana":   9996674,
+    }
+
+    fmt.Println(amigos)
+    fmt.Println(amigos["joana"])
+
+    amigos["gopher"] = 444444
+
+    fmt.Println(amigos)
+    fmt.Println(amigos["gopher"], "\n\n")
+
+
+    // comma ok idiom
+    if será, ok := amigos["fantasma"]; !ok {
+      fmt.Println("não tem!")
+    } else {
+      fmt.Println(será)
+    }
+
+  }
+  ```
+- Maps: range & deletando
+- Range: for k, v := range map { }
+- Reiterando: maps não tem ordem e um range usará uma ordem aleatória.
+- Ex:
+  ```go
+    package main
+
+    import (
+      "fmt"
+    )
+
+    func main() {
+
+      qualquercoisa := map[int]string{
+        123: "muito legal",
+        98:  "menos legal um pouquinho",
+        983: "esse é massa",
+        19:  "idade de ir pra festa",
+      }
+
+      fmt.Println(qualquercoisa)
+
+      total := 0
+
+      for key, _ := range qualquercoisa {
+        total += key
+      }
+      
+      fmt.Println(total)
+
+    }
+
+  ```
+
+- delete(map, key)
+- Deletar uma key não-existente não retorna erros!
+Ex:
+  ```go
+    package main
+
+    import (
+      "fmt"
+    )
+
+    func main() {
+
+      qualquercoisa := map[int]string{
+        123: "muito legal",
+        98:  "menos legal um pouquinho",
+        983: "esse é massa",
+        19:  "idade de ir pra festa",
+      }
+
+      fmt.Println(qualquercoisa)
+
+      delete(qualquercoisa, 123)
+
+      fmt.Println(qualquercoisa)
+
+    }
+
+  ```
