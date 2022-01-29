@@ -374,3 +374,23 @@ Ex:
     }
 
   ```
+
+## Strucs
+- É um tipo de dados composto, agrupa tipo de dados arbitrários em um objeto
+Ex: 
+```go
+  type struct Person {
+    name  string 
+    addr  string 
+    phone string 
+  }
+
+  // declaração sem iniciar
+  var p1 Person
+  
+  // ou iniciar um objeto com todos os valores "zero"
+  p1 := new(Person)
+  
+  // ou declarar e iniciar usando struct literal
+  p1 := Person(name: "gabriel", addr: "rua ...", phone: "1234")
+```
