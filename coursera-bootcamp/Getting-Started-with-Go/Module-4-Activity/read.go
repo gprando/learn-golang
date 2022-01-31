@@ -42,7 +42,7 @@ func readNamesFromFile(fileName string) []Name {
 		line = strings.TrimSpace(line)
 
 		fullName := strings.Fields(line)
-		if len(line) <= 0 || err == io.EOF {
+		if len(line) <= 0 || len(fullName) < 2 || err == io.EOF {
 			break
 		}
 
