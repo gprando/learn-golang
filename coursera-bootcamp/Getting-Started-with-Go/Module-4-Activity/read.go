@@ -9,8 +9,8 @@ import (
 )
 
 type Name struct {
-	fName string
-	lName string
+	fname string
+	lname string
 }
 
 func main() {
@@ -21,10 +21,8 @@ func main() {
 
 	names := readNamesFromFile(fileName)
 
-	for index, name := range names {
-		fmt.Println("index", index)
-		fmt.Println("first name", name.fName)
-		fmt.Println("last name", name.lName)
+	for _, name := range names {
+		fmt.Println(name.fname + " " + name.lname)
 	}
 }
 
