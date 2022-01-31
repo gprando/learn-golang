@@ -42,12 +42,11 @@ func readNamesFromFile(fileName string) []Name {
 		line = strings.TrimSpace(line)
 
 		fullName := strings.Fields(line)
-		names = append(names, Name{fullName[0], fullName[1]})
-
-		if err == io.EOF {
+		if len(line) <= 0 || err == io.EOF {
 			break
 		}
 
+		names = append(names, Name{fullName[0], fullName[1]})
 	}
 
 	file.Close()
