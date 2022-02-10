@@ -394,3 +394,91 @@ Ex:
   // ou declarar e iniciar usando struct literal
   p1 := Person(name: "gabriel", addr: "rua ...", phone: "1234")
 ```
+
+## Funções
+- É apenas um conjunto de instruções com um nome
+- Ótimo para operações comuns, utilizadas em mais de um lugar
+- Ótimo para separar responsabilidade por contexto
+
+```go
+//chave func, nome da função (args) retorno { }
+func main() {
+  // conteúdo da função aqui ....
+}
+```
+#### Argumentos em funções
+- Vem após o nome dentro de parâmetros ex: ```func hello(parametro int)....```
+- Cada parâmetro é separado por virgula
+- Podemos encurar a tipagem dos parâmetros, quando tempos uma sequência de parêmetros do mesmo tipo
+    ex: 
+```go
+  func hello(firstName, lastName string) {
+    fmt.Println(firstName + lastName)
+  }
+```
+
+#### Retornos
+- Toda função pode retornar algo ou não (void)
+- Podemos ter mais do que um retorno para uma função
+- Sempre que a função tiver retorno, em sua chamada, devemos atribuir o valor de retorno a uma variável
+
+ex: 
+```go
+//  Sem retorno
+func foo(x int) {
+  fmt.Println(x+1);
+}
+
+foo()
+
+//  um retorno
+func foo1(x int) int {
+  return x+1;
+}
+
+a := foo1()
+
+//  mais de um retorno
+func foo1(x int) (int, int) {
+  return x, x+1;
+}
+
+a, b := foo2()
+```
+
+#### Passagem de parâmetros por cópia vs referência
+- Temos essas duas formas de passar parêmetros pras funções
+  - Cópia, forma padrão, uma cópia do parâmetro é passado para dentro da funçõa, ao alterar o valor dentro da função, não irá refletir no valor originar passado
+  - Referência, passamos o endereço de memória da variável, ao alterar o valor, alteramos o valor no endereço de memória e consequentemente na variável original
+  ex: 
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var value int32 = 9
+
+	fmt.Println("address memory is", &value, "and value:", value)
+	printAsCopy(value)
+	fmt.Println("After function address memory is", &value, "and value:", value)
+
+	fmt.Println("")
+	fmt.Println("")
+
+	fmt.Println("address memory is", &value, "and value:", value)
+	printAsReference(&value)
+	fmt.Println("After function address memory is", &value, "and value:", value)
+}
+
+func printAsReference(value *int32) {
+	fmt.Println("printAsReference -> address memory is", value, "and value:", *value)
+	*value = 16 // Alterando o valor na memória, teremos efeito diretamente na função main
+}
+
+func printAsCopy(value int32) {
+	fmt.Println("printAsCopy -> address memory is", &value, "and value:", value)
+	value = 16 // como estamos mudando o valor somente aqui na variável de cópia, não teremos
+	// o efeito na função main
+}
+```
