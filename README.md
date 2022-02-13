@@ -482,3 +482,82 @@ func printAsCopy(value int32) {
 	// o efeito na função main
 }
 ```
+
+#### Function as Arguments
+  - Podemos criar uma função que recebe outra função como parâmetro
+  ex: 
+```go
+// quando chamada, irá executar uma função que criamos, aplicando o valor
+func applyIt(outraFunc func (int) int, 
+  valor int) int {
+    return outraFunc(valor)
+}
+
+func minhaFuncSoma(value int) {
+  return value + 1
+}
+func minhaFuncSubtrai(value *int32) {
+  return value - 1
+}
+
+func main() {
+  fmt.Println(applyIt(minhaFuncSoma, 10)) // 11
+  fmt.Println(applyIt(minhaFuncSubtrai, 10)) // 9
+}
+```
+
+#### Funções anônimas
+- Funções sem nome
+  ex: 
+```go
+// quando chamada, irá executar uma função que criamos, aplicando o valor
+func applyIt(outraFunc func (int) int, 
+  valor int) int {
+    return outraFunc(valor)
+}
+
+func main() {
+  fmt.Println(applyIt(func (x int) int {
+    return x+1
+  }, 10)) // 11
+}
+```
+#### Funções variádicas (com número de parâmetros variados) 
+- Uma função pode ter número de parâmetros variados
+- Os parâmetros se tornam um slice dentro da função
+ex: 
+```go
+  func getMax(values ...int) int {
+    max := -1 
+    for _, v := range values {
+      if v > max {
+        vax = v
+      }
+    }
+
+    return max
+  }
+
+
+  maxValue := getMax(2,34,5,1,2,3,44,5,9)
+
+  // também posso passar um slice
+  vslice := [] int{1,2,3,4,53,2,33,45}
+  maxValue := getMax(vslice...)
+``` 
+
+#### Defer Function call (Adiar a chamada de uma função)  
+- Podemos chamar uma função com a declaração de `defer`, que irá adiar a chamada da função
+- Os argumentos não são adiados, serão utilizados na ordem correta, caso a função recebesse um `X` como parâmetro e o valor dele fosse 2, caso mudasse para 4, o valor da execução da função no defer será 2
+ex: 
+```go
+  func main() {
+    defer fmt.Println("Bye!")
+    
+    
+    fmt.Println("Hello")
+  }
+//  output -> 
+// Hello
+// Bye!
+``` 
