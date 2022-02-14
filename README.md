@@ -561,3 +561,63 @@ ex:
 // Hello
 // Bye!
 ``` 
+
+## Orientação a Objetos em GO
+
+### Classes e encapsulamento 
+- Golang não tem classes, mas tem algo equivalente
+- O que são classes?
+  - Basicamente coleção de campos de dados e funções que compartilham uma responsabilidade bem definida
+- Em go temos receptores para um tipo onde podemos simular um classe, geralmente usamos uma struct para ser receptor, mas não é obrigatório
+
+ex usando int:
+```go
+  package main
+
+  import "fmt"
+
+  type MyClass int
+
+  func (value MyClass) Pow() int {
+    return int(value * value)
+  }
+
+  func main() {
+    num := MyClass(10)
+
+    fmt.Println("num: ", num)
+    fmt.Println("pow of num: ", num.Pow())
+  }
+
+``` 
+
+ex usando struct:
+
+```go
+  package main
+
+  import "fmt"
+
+  type rect struct {
+      width, height int
+  }
+
+  func (r *rect) area() int {
+      return r.width * r.height
+  }
+
+  func (r rect) perim() int {
+      return 2*r.width + 2*r.height
+  }
+
+  func main() {
+      r := rect{width: 10, height: 5}
+
+      fmt.Println("area: ", r.area())
+      fmt.Println("perim:", r.perim())
+
+      rp := &r
+      fmt.Println("area: ", rp.area())
+      fmt.Println("perim:", rp.perim())
+  }
+```
