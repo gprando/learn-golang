@@ -621,3 +621,62 @@ ex usando struct:
       fmt.Println("perim:", rp.perim())
   }
 ```
+
+### Polimorfismo
+- Polimorfismo são diferentes formas de fazer uma mesma coisa, a alto nível as coisas são iguais, mas a baixo nível são diferente, por exemplo calculo área de figuras geométricas, a essência é a mesma, mas a fórmula é diferente
+- Em linguagens tradicionar podemos fazer isso através de herança, mas golang não tem classes nem herança
+
+### Interfaces
+- Em go interfaces são um agrupamento de assinatura de métodos
+- Não há implementação
+- Usado para expressar similaridade conceitual entre tipos 
+ex: 
+```go
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+type geometry interface {
+    area() float64
+    perim() float64
+}
+
+type rect struct {
+    width, height float64
+}
+type circle struct {
+    radius float64
+}
+
+func (r rect) area() float64 {
+    return r.width * r.height
+}
+func (r rect) perim() float64 {
+    return 2*r.width + 2*r.height
+}
+
+func (c circle) area() float64 {
+    return math.Pi * c.radius * c.radius
+}
+func (c circle) perim() float64 {
+    return 2 * math.Pi * c.radius
+}
+
+func measure(g geometry) {
+    fmt.Println(g)
+    fmt.Println(g.area())
+    fmt.Println(g.perim())
+}
+
+func main() {
+    r := rect{width: 3, height: 4}
+    c := circle{radius: 5}
+
+    measure(r)
+    measure(c)
+}
+```
+
