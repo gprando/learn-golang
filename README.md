@@ -680,3 +680,20 @@ func main() {
 }
 ```
 
+## Concorrência vs Paralelismo
+- Execução paralela necessita de hardware diferente, núcleos diferentes
+- Execução concorrente pode executar no mesmo hardware
+
+
+### Paralelismo
+- Execução paralela é quando 2 coisas executam exatamente no mesmo tempo
+- No processador cada núcleo é feita e capaz de executar uma coisa de cada vez
+- Para conseguirmos ter execução paralela temos que ter um processador com pelo menos 2 núcleos
+- Por que fazer execução paralela?
+  - Terminar tarefas mais rapidamente
+  - Só podemos fazer coisas em paralelo quando as mesmas não tem dependências entre si
+  
+### Concorrência 
+- Pro que usar concorrência?
+  - Falamos que tarefas são concorrentes quando a hora de início e a hora de término das tarefas se sobrepóesm 
+  - Não significa que estão executando ao mesmo tempo
