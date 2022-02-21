@@ -697,3 +697,21 @@ func main() {
 - Pro que usar concorrência?
   - Falamos que tarefas são concorrentes quando a hora de início e a hora de término das tarefas se sobrepóesm 
   - Não significa que estão executando ao mesmo tempo
+
+
+### Processos
+- Basicamente uma instância de um programa em execução
+- Cada processo tem coisas exclusivas
+  - Como um pedaço de memória
+  - Seu próprio código, stack, heap
+
+### Schedule
+- Task principal de um processador
+- Da uma ilusão de paralelismo em execução
+- Alterna execução entre os processos de forma concorrente
+- Temos diversos algoritmos de scheduling, com diferentes formas de priorização
+
+### Context Switch
+- Quando queremos trocar de processo por exemplo do processo A para o processo B, temos que salvar o estado (Contexto) do processo anterior (A) para usar posteriormente quando retornarmos a ele
+  - Contexto do processo, engloba tudo sobre ele, endereços de memória, stack, heap, etc...
+- Para definir quando o processador irá alternar entre cada processo, temos auxílio de um timer, onde o processador define um tempo, e a cada tempo ele alterna o contexto para outro processo
