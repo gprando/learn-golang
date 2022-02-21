@@ -715,3 +715,23 @@ func main() {
 - Quando queremos trocar de processo por exemplo do processo A para o processo B, temos que salvar o estado (Contexto) do processo anterior (A) para usar posteriormente quando retornarmos a ele
   - Contexto do processo, engloba tudo sobre ele, endereços de memória, stack, heap, etc...
 - Para definir quando o processador irá alternar entre cada processo, temos auxílio de um timer, onde o processador define um tempo, e a cada tempo ele alterna o contexto para outro processo
+
+### Tópicos e goroutines
+
+#### Threads Vs Processos
+- Um processo pode ter várias threads dentro dele
+- Thread compartilham contexto
+
+#### Goroutines 
+- São threads em Go
+- Muitas goroutines executam dentro de uma mesma thread do sistema operacional
+- Podemos ter várias goroutines dentro de uma thread, onde estamos alternando entre cada execução, do ponto de vista do sistema operacional, tudo é um processo só, mas internamente no go, ele pode alternar em uma thread vários goroutines. Para isso acontecer, temos auxílio do *go runtime scheduler*
+
+#### Go runtime scheduler
+- Usa um processador lógico
+  - É mapeado para uma thread
+- Faz agendamento dentro de uma thread do SO
+- O sistema operacional agenda qual thread irá executar/alternar, uma vez que o SO agendou e executou uma thread, o GO pode escolher diferentes goroutines para executar em momentos diferentes dentro da exução dessa thread
+
+### Concorrência e intercalação
+- Intercalação são as instruções em duas tarefas diferentes
