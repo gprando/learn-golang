@@ -716,7 +716,7 @@ func main() {
   - Contexto do processo, engloba tudo sobre ele, endereços de memória, stack, heap, etc...
 - Para definir quando o processador irá alternar entre cada processo, temos auxílio de um timer, onde o processador define um tempo, e a cada tempo ele alterna o contexto para outro processo
 
-### Tópicos e goroutines
+## Tópicos e goroutines
 
 #### Threads Vs Processos
 - Um processo pode ter várias threads dentro dele
@@ -754,5 +754,102 @@ func main() {
   - Vários métodos para sincronização, sendo o mais comum `sync.WaitGroup`, que faz o programa esperar todas as threads terminem a execução para continuar 
     - Funciona com um contador interno, para cada nova goroutine que adicionamos ao grupo ele incrementa 1, ao completar uma goroutine ele decrementa, quando esperamos todas as goroutines, queremos que o contador esteja < 0 
 
+ex: 
+```go
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+func worker(id int) {
+    fmt.Printf("Worker %d starting\n", id)
+
+    time.Sleep(time.Second)
+    fmt.Printf("Worker %d done\n", id)
+}
+
+func main() {
+
+    var wg sync.WaitGroup
+
+    for i := 1; i <= 5; i++ {
+        wg.Add(1)
+
+        i := i
+
+        go func() {
+            defer wg.Done()
+            worker(i)
+        }()
+    }
+
+    wg.Wait()
+
+}
+```
+```bash
+$ go run waitgroups.go
+Worker 5 starting
+Worker 3 starting
+Worker 4 starting
+Worker 1 starting
+Worker 2 starting
+Worker 4 done
+Worker 1 done
+Worker 2 done
+Worker 5 done
+Worker 3 done
+```
+
 ### Tópicos/Comunicação em threads
-- 
+- Por mais que goroutines rodem de forma independente, geralmente teremos dentro de um programa rodando coisas do mesmo contexto, pois se tivessemos coisas totalmente independentes, tanto em execução e contexto, faria muito mais sentido estarem em programas separados
+  - Geralmente são partes menores de uma tarefa maior
+
+#### Channels
+- Transfere dados entre goroutines 
+- É tipado
+- Podemos especificar a direção do canal
+ex: 
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+    messages := make(chan string)
+
+    go func() { messages <- "ping" }()
+
+    msg := <-messages
+    fmt.Println(msg)
+}
+```
+
+##### Blocking in channels (bloqueio em canais)
+- Por padrão um canal é chamado de unbuffered
+  - Quando você cria o canal ele é sem buffer
+    - Os canais sem buffer não podem armazenar dados em transito
+
+
+ex: 
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+    // com buffer igual a 2, o default é sem buffer é = 0 
+    messages := make(chan string, 2)
+
+    messages <- "buffered"
+    messages <- "channel"
+
+    fmt.Println(<-messages)
+    fmt.Println(<-messages)
+}
+```
