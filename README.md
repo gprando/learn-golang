@@ -735,3 +735,24 @@ func main() {
 
 ### Concorrência e intercalação
 - Intercalação são as instruções em duas tarefas diferentes
+
+## Goroutines
+- Uma goroutine é criada automaticamente a partir da função *main()* quando o programa executa
+- Outras goroutines podem poder ser criadas utilizando a palavra reservada `go`
+- Uma goroutine termina quando o código nela completar
+- Quando a goroutine main parar a execução *todas as outras goroutines irão parar*
+
+
+### Sincronização básica
+- Sincroização é quando várias threads concordam com um tempo de um evento
+- Uma thread nunca sabe sobre o tempo de uma outra goroutine
+- Podemos sincronizar threads através de eventos globais, onde temos a emissão de um evento que é visto por todas as threads
+
+### Wait groups
+- Sincronização mais comum no go
+- Temos um pacote para isso `sync`
+  - Vários métodos para sincronização, sendo o mais comum `sync.WaitGroup`, que faz o programa esperar todas as threads terminem a execução para continuar 
+    - Funciona com um contador interno, para cada nova goroutine que adicionamos ao grupo ele incrementa 1, ao completar uma goroutine ele decrementa, quando esperamos todas as goroutines, queremos que o contador esteja < 0 
+
+### Tópicos/Comunicação em threads
+- 
