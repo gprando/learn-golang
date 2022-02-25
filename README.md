@@ -853,3 +853,100 @@ func main() {
     fmt.Println(<-messages)
 }
 ```
+
+### Select em channels
+- A seleção do Go permite que você aguarde operações de vários canais. Combinar goroutines e canais com select é um recurso poderoso do Go.
+```go
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+
+    c1 := make(chan string)
+    c2 := make(chan string)
+
+    go func() {
+        time.Sleep(1 * time.Second)
+        c1 <- "one"
+    }()
+    go func() {
+        time.Sleep(2 * time.Second)
+        c2 <- "two"
+    }()
+
+    for i := 0; i < 2; i++ {
+        select {
+        case msg1 := <-c1:
+            fmt.Println("received", msg1)
+        case msg2 := <-c2:
+            fmt.Println("received", msg2)
+        }
+    }
+}
+```
+### Mutex
+
+- Vimos como os canais são ótimos para comunicação entre goroutines.
+
+- Mas e se não precisarmos de comunicação? E se quisermos apenas garantir que apenas uma goroutine possa acessar uma variável por vez para evitar conflitos?
+
+- Esse conceito é chamado de exclusão mútua, e o nome convencional para a estrutura de dados que o fornece é mutex.
+
+- A biblioteca padrão do Go fornece exclusão mútua com sync.Mutex e seus dois métodos:
+  - Lock
+  - Unlock
+  - 
+- Podemos definir um bloco de código a ser executado em exclusão mútua envolvendo-o com uma chamada para Lock and Unlock conforme mostrado no método Inc.
+
+- Também podemos usar defer para garantir que o mutex seja desbloqueado como no método Value.
+ex:
+```go
+package main
+
+import (
+    "fmt"
+    "sync"
+)
+
+type Container struct {
+    mu       sync.Mutex
+    counters map[string]int
+}
+
+func (c *Container) inc(name string) {
+
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    c.counters[name]++
+}
+
+func main() {
+    c := Container{
+
+        counters: map[string]int{"a": 0, "b": 0},
+    }
+
+    var wg sync.WaitGroup
+
+    doIncrement := func(name string, n int) {
+        for i := 0; i < n; i++ {
+            c.inc(name)
+        }
+        wg.Done()
+    }
+
+    wg.Add(3)
+    go doIncrement("a", 10000)
+    go doIncrement("a", 10000)
+    go doIncrement("b", 10000)
+
+    wg.Wait()
+    fmt.Println(c.counters)
+}
+```
+- O contêiner contém um mapa de contadores; como queremos atualizá-lo simultaneamente de várias goroutines, adicionamos um Mutex para sincronizar o acesso. Observe que os mutexes não devem ser copiados, portanto, se esse struct for passado, deve ser feito por ponteiro.
+- Bloqueie o mutex antes de acessar os contadores; desbloqueie-o no final da função usando uma instrução defer.
