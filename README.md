@@ -950,3 +950,39 @@ func main() {
 ```
 - O contêiner contém um mapa de contadores; como queremos atualizá-lo simultaneamente de várias goroutines, adicionamos um Mutex para sincronizar o acesso. Observe que os mutexes não devem ser copiados, portanto, se esse struct for passado, deve ser feito por ponteiro.
 - Bloqueie o mutex antes de acessar os contadores; desbloqueie-o no final da função usando uma instrução defer.
+
+### Sync Once
+- Once é um objeto que realizará exatamente uma ação.
+- A Once não deve ser copiado após o primeiro uso.
+- Do chama a função f se e somente se Do está sendo chamado pela primeira vez para esta instância de Once. Em outras palavras, dado
+ex: 
+```go
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	var once sync.Once
+	onceBody := func() {
+		fmt.Println("Only once")
+	}
+	done := make(chan bool)
+	for i := 0; i < 10; i++ {
+		go func() {
+			once.Do(onceBody)
+			done <- true
+		}()
+	}
+	for i := 0; i < 10; i++ {
+		<-done
+	}
+}
+
+```
+
+### Deadlock
+- Vem da dependência de sincronização
+- A execução de uma goroutine pode depender de outra goroutine
+- O bloqueio de goroutines, caracterizados por ***Circular dependencies*** (dependência circular) causa deadlock, por exemplo quando temos 2 goroutines G1 e G2, e para a executação de G1 temos dependência da execução de G2 e para a executação de G2 temos dependência da execução de G1
+- 
